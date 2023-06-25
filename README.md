@@ -5,11 +5,9 @@
 
 # Interpolated String Builder
 
-**[InterpolatedStringBuilder](src/InterpolatedStrings/InterpolatedStringBuilder.cs) is like a StringBuilder but for Interpolated Strings (FormattableString)**
+**[InterpolatedStringBuilder](src/InterpolatedStrings/InterpolatedStringBuilder.cs) is a `FormattableString` with support for concatenating other interpolated strings, replace(), insert(), etc**
 
-It's an implementation of `FormattableString` with support for concatenating strings, replace, insert, etc.
-
-This project was based on [DapperQueryBuilder](https://github.com/Drizin/DapperQueryBuilder).
+It's similar to a StringBuilder but for Interpolated Strings (FormattableString)
 
 # Quickstart
 
@@ -70,7 +68,7 @@ Assert.AreEqual("SELECT * FROM Products WHERE CategoryId=@p0 AND price<=@p1", sq
 // var products = connection.Query<Product>(sql, sqlParms)
 ```
 
-## Conditional Appends
+## Fluent API and Conditional Appends
 
 ```cs
 int? categoryId = null;
@@ -83,8 +81,7 @@ double? maxPrice = 20.50;
 var query = 
     new InterpolatedStringBuilder($"SELECT * FROM Products WHERE 1=1")
     .AppendIf(categoryId != null, $" AND CategoryId={categoryId}")
-    .AppendIf(maxPrice != null, $" AND price<={maxPrice}")
-    ;
+    .AppendIf(maxPrice != null, $" AND price<={maxPrice}");
 
 // Now query.Format is "SELECT * FROM Products WHERE 1=1 AND price<={0}"
 ```
@@ -136,17 +133,83 @@ builder.Append6($" something...");
 builder.AppendIf6(true, $" something else...");
 ```
 
+## Extensibility
 
+One of the nice things of this library is that you can extend the `InterpolatedStringBuilder` class and override methods like `AppendLiteral()`, `AppendArgument()`, or `AddArgument()`, and manipulate the way that `Format` is built or the way that `Arguments` are created.
+And you can do things like [this](https://github.com/Drizin/DapperQueryBuilder).
 
+## More Examples
 See more examples in [unit tests](/src/InterpolatedStrings.Tests/).
 
 
+# FAQ
 
-## How to Collaborate?
+## What is FormattableString?
 
-Please submit a pull-request or if you want to make a sugestion you can [create an issue](https://github.com/Drizin/InterpolatedStrings/issues) or [contact me](https://rickdrizin.com/pages/Contact/).
+Whenever you write an interpolated string, the compiler can either convert it to a plain string or (if you specify the right type) it can keep the interpolated string as a `FormattableString`.  
+The nice part of FormattableString (as compared to a plain string) is that it keeps the `Arguments` (the objects that you interpolate) and the `Format` (the literals around the arguments) isolated from each other.
+And this allows a lot of clever usages like [this](https://github.com/Drizin/DapperQueryBuilder).  
 
-## Stargazers over time
+## What is wrong with FormattableString?
+
+The major limitation of FormattableString is that it's immutable: you can't append new interpolated strings, or modify it (Replace()/Insert()/Remove()).
+
+PS: Actually `FormattableString` is an abstract class (which we also implement). The limitation in case is from `ConcreteFormattableString` which is the concrete type that the compiler uses when it creates an interpolated string.
+
+
+## Is this a replacement for StringBuilder?
+
+**No, it's NOT.**
+
+It's more like a replacement for `ConcreteFormattableString`, but it's **similar** to a StringBuilder only in the sense that it's mutable (we can concatenate new interpolated strings), which is not possible in ConcreteFormattableString.
+
+So in other words, `InterpolatedStringBuilder` is a `FormattableString` implementation that allows us to concatenate other interpolated strings, and offers some methods similar to methods that you would also have in a StringBuilder (`Replace()`, `Insert()`, `Remove()`) etc).  
+So our methods are named like StringBuilder methods, but instead of operating on plain strings (like a StringBuilder), it wraps both `Arguments` and Literals (`Format`) - like a `FormattableString` would do.
+
+## How is this any better than using a plain StringBuilder?
+
+Having a single wrapper (which wraps both `Arguments` and `Format`, and lets them "walk side-by-side" - always in synch) makes things easier.
+
+In a single statement you can both append one or more literals and one or more arguments.
+
+```cs
+// Using a StringBuilder we have to keep Arguments and Literals individually
+var sql  = new StringBuilder();
+var dynamicParams = new DynamicParameters();
+
+sql.Append("SELECT * FROM Product WHERE 1=1");
+
+sql.Append(" AND Name LIKE @p0"); 
+dynamicParams.Add("p0", productName);
+
+sql.Append(" AND ProductSubcategoryID = @p1");
+dynamicParams.Add("p1", subCategoryId);
+```
+
+```cs
+// Using InterpolatedStringBuilder the Arguments and Literals walk side-by-side
+var sql  = new InterpolatedStringBuilder();
+
+sql.Append($"SELECT * FROM Product WHERE 1=1");
+
+sql.Append($" AND Name LIKE {productName}"); 
+sql.Append($" AND ProductSubcategoryID = {subCategoryId}");
+```
+
+And by inheriting from `InterpolatedStringBuilder` we can even hack the way that literals and arguments are processed (e.g. automatically add spaces, or even parse hints like `sql.Append($" AND Name LIKE {productName:nvarchar(200)}")` ).
+
+
+
+## Why the regex parsing?
+
+Starting with net6.0 the interpolated strings can be parsed using an `InterpolatedStringHandler`, which processes the interpolated strings block by block (literal by literal, argument by argument).  
+This step-by-step processing is very interesting because derived classes have a chance to modify the underlying format - like automatically adding spaces, adding or removing quotes, extracting IFormattable formats, or anything else.  
+Before `InterpolatedStringHandler` the only way to do that (process each literal one by one) was using regular expressions.  
+Our `StringInterpolationBuilder` works both with net5.0 or older (using regex) and with net6.0+ (using `InterpolatedStringHandler`). You can inherit `StringInterpolationBuilder` and override `AppendLiteral()` and `AppendArgument()`, and do your own magic.
+If you don't need to override those methods then probably we wouldn't need to parse the format using regex (we'll improve that).
+
+
+# Stargazers over time
 
 [![Star History Chart](https://api.star-history.com/svg?repos=Drizin/InterpolatedStrings&type=Date)](https://star-history.com/#Drizin/InterpolatedStrings&Date)
 
