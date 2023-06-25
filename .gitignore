@@ -396,3 +396,7 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+/src/InterpolatedStrings/InterpolatedStrings.xml
+/src/InterpolatedStrings.StrongName/InterpolatedStrings.StrongName.xml
+/src/release.snk

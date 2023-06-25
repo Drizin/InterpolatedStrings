@@ -1,0 +1,54 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.1;net5.0;net6.0</TargetFrameworks>
+		<Authors>Rick Drizin</Authors>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/Drizin/InterpolatedStrings/</PackageProjectUrl>
+		<Description>InterpolatedStringBuilder is like a StringBuilder but for Interpolated Strings (FormattableString)</Description>
+		<Copyright>Rick Drizin</Copyright>
+		<Company>Rick Drizin</Company>
+		<Version>2.0.0-beta1</Version>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<Title>InterpolatedStrings (Strong Named)</Title>
+		<PackageId>InterpolatedStrings.StrongName</PackageId>
+		<DocumentationFile>InterpolatedStrings.StrongName.xml</DocumentationFile>
+		<PackageTags>interpolated strings;formattablestring;query builder;string interpolation;</PackageTags>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<!-- Include symbol files (*.pdb) in the main .nupkg -->
+		<PackageReadmeFile>NuGetReadMe.md</PackageReadmeFile>
+		<AssemblyName>InterpolatedStrings.StrongName</AssemblyName>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\InterpolatedStrings\NuGetReadMe.md" Pack="true" PackagePath="\" />
+		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<Choose>
+		<When Condition="'$(Configuration)' == 'Debug'">
+			<PropertyGroup>
+				<SignAssembly>True</SignAssembly>
+				<AssemblyOriginatorKeyFile>..\debug.snk</AssemblyOriginatorKeyFile>
+			</PropertyGroup>
+		</When>
+		<Otherwise>
+			<PropertyGroup>
+				<SignAssembly>True</SignAssembly>
+				<AssemblyOriginatorKeyFile>..\release.snk</AssemblyOriginatorKeyFile>
+			</PropertyGroup>
+		</Otherwise>
+	</Choose>
+
+	<ItemGroup>
+		<Folder Include="Properties\" />
+		<Compile Include="..\InterpolatedStrings\**\*.cs" Exclude="..\InterpolatedStrings\obj\**\*.cs" />
+	</ItemGroup>
+
+
+</Project>

@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>netstandard2.1;net5.0;net6.0</TargetFrameworks>
+		<Authors>Rick Drizin</Authors>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageProjectUrl>https://github.com/Drizin/InterpolatedStrings/</PackageProjectUrl>
+		<Description>InterpolatedStringBuilder is like a StringBuilder but for Interpolated Strings (FormattableString)</Description>
+		<Copyright>Rick Drizin</Copyright>
+		<Company>Rick Drizin</Company>
+		<Version>2.0.0-beta1</Version>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+		<Title>InterpolatedStrings</Title>
+		<PackageId>InterpolatedStrings</PackageId>
+		<DocumentationFile>InterpolatedStrings.xml</DocumentationFile>
+		<PackageTags>interpolated strings;formattablestring;query builder;string interpolation;</PackageTags>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<!-- Include symbol files (*.pdb) in the main .nupkg -->
+		<PackageReadmeFile>NuGetReadMe.md</PackageReadmeFile>
+		<AssemblyName>InterpolatedStrings</AssemblyName>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\InterpolatedStrings\NuGetReadMe.md" Pack="true" PackagePath="\" />
+		<PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
+		<PackageReference Include="Microsoft.SourceLink.GitHub" Version="1.1.1">
+			<PrivateAssets>all</PrivateAssets>
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
+	</ItemGroup>
+
+	<Choose>
+		<When Condition="'$(Configuration)' == 'Debug'">
+			<ItemGroup>
+				<InternalsVisibleTo Include="InterpolatedStrings.Tests" />
+			</ItemGroup>
+		</When>
+		<Otherwise>
+			<ItemGroup>
+				<InternalsVisibleTo Include="InterpolatedStrings.Tests" />
+			</ItemGroup>
+		</Otherwise>
+	</Choose>
+</Project>
