@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using static System.Net.WebRequestMethods;
 
 namespace InterpolatedStrings
 {
@@ -68,7 +67,7 @@ namespace InterpolatedStrings
         /// <summary>
         /// Parses a FormattableString (using <see cref="InterpolatedStringAdapter"/> handler) and Appends it to an existing <see cref="InterpolatedStringBuilder"/>.
         /// </summary>
-        public virtual void ParseAppend6(InterpolatedStringAdapter value, InterpolatedStringBuilder target)
+        public virtual void ParseAppend(InterpolatedStringAdapter value, InterpolatedStringBuilder target)
         {
             target.Append(value.InterpolatedStringBuilder);
         }

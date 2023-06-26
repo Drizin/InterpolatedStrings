@@ -14,7 +14,7 @@ namespace InterpolatedStrings
         /// <summary>
         /// Creates a new InterpolatedStringBuilder using an InterpolatedStringHandler (net6.0+) which can be a little faster than using regex.
         /// </summary>
-        public virtual InterpolatedStringBuilder Create6(InterpolatedStringAdapter value)
+        public virtual InterpolatedStringBuilder Create(InterpolatedStringAdapter value)
         {
             return value.InterpolatedStringBuilder;
         }
@@ -22,13 +22,11 @@ namespace InterpolatedStrings
         /// <summary>
         /// Creates a new InterpolatedStringBuilder using an InterpolatedStringHandler (net6.0+) which can be a little faster than using regex.
         /// </summary>
-        public virtual InterpolatedStringBuilder Create6([InterpolatedStringHandlerArgument("options")] InterpolatedStringAdapter value, InterpolatedStringBuilderOptions options)
+        public virtual InterpolatedStringBuilder Create([InterpolatedStringHandlerArgument("options")] InterpolatedStringAdapter value, InterpolatedStringBuilderOptions options)
         {
             return value.InterpolatedStringBuilder;
         }
-
-#endif
-
+#else
         /// <summary>
         /// Creates a new InterpolatedStringBuilder using regular expression for parsing the FormattableString. 
         /// If you're using net6.0+ please consider using <see cref="Create6(InterpolatedStringAdapter)"/> which can be a little faster than using regex.
@@ -39,6 +37,9 @@ namespace InterpolatedStrings
             Parser.ParseAppend(source, target);
             return target;
         }
+#endif
+
+
 
 #region Default Parser Instance
         /// <summary>

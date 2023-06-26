@@ -4,41 +4,6 @@
         <name>InterpolatedStrings</name>
     </assembly>
     <members>
-        <member name="T:InterpolatedStrings.InterpolatedStringAdapter">
-            <summary>
-            Just a simple InterpolatedStringHandler that builds a <see cref="P:InterpolatedStrings.InterpolatedStringAdapter.InterpolatedStringBuilder"/> without requiring regex parsing.
-            </summary>
-        </member>
-        <member name="P:InterpolatedStrings.InterpolatedStringAdapter.InterpolatedStringBuilder">
-            <summary>
-            Underlying Interpolated String
-            </summary>
-        </member>
-        <member name="M:InterpolatedStrings.InterpolatedStringAdapter.#ctor(System.Int32,System.Int32)">
-            <inheritdoc />
-        </member>
-        <member name="M:InterpolatedStrings.InterpolatedStringAdapter.#ctor(System.Int32,System.Int32,InterpolatedStrings.InterpolatedStringBuilder)">
-            <inheritdoc />
-        </member>
-        <member name="M:InterpolatedStrings.InterpolatedStringAdapter.#ctor(System.Int32,System.Int32,InterpolatedStrings.InterpolatedStringBuilderOptions)">
-            <inheritdoc />
-        </member>
-        <member name="M:InterpolatedStrings.InterpolatedStringAdapter.AppendLiteral(System.String)">
-            <summary>
-            Appends a literal string. 
-            Curly braces will be automatically escaped depending on <see cref="P:InterpolatedStrings.InterpolatedStringBuilderOptions.AutoEscapeCurlyBraces"/>.
-            </summary>
-        </member>
-        <member name="M:InterpolatedStrings.InterpolatedStringAdapter.AppendFormatted``1(``0)">
-            <summary>
-            Appends the specified object.
-            </summary>
-        </member>
-        <member name="M:InterpolatedStrings.InterpolatedStringAdapter.AppendFormatted``1(``0,System.String)">
-            <summary>
-            Appends the specified object.
-            </summary>
-        </member>
         <member name="T:InterpolatedStrings.InterpolatedStringArgument">
             <summary>
             Interpolated string arguments are defined like this:  $"My string {arg}", $"My string {val:000}"
@@ -132,9 +97,6 @@
         <member name="M:InterpolatedStrings.InterpolatedStringBuilder.#ctor(System.FormattableString,InterpolatedStrings.InterpolatedStringBuilderOptions)">
             <inheritdoc />
         </member>
-        <member name="M:InterpolatedStrings.InterpolatedStringBuilder.#ctor(System.Int32,System.Int32,InterpolatedStrings.InterpolatedStringBuilderOptions)">
-            <inheritdoc />
-        </member>
         <member name="M:InterpolatedStrings.InterpolatedStringBuilder.AsFormattableString">
             <summary>
             Casts to a regular FormattableString
@@ -161,7 +123,7 @@
             Appends to this instance another FormattableString.
             Uses regular expression for parsing the FormattableString.
             Underlying parameters will be appended (merged), and underlying formats will be concatenated (placeholder positions will be shifted to their new positions).
-            If you're using net6.0+ please consider using <see cref="M:InterpolatedStrings.InterpolatedStringBuilder.Append6(InterpolatedStrings.InterpolatedStringAdapter)"/> which can be a little faster than using regex.
+            If you're using net6.0+ please consider using <see cref="!:Append6(InterpolatedStringAdapter)"/> which can be a little faster than using regex.
             </summary>
         </member>
         <member name="M:InterpolatedStrings.InterpolatedStringBuilder.AppendIf(System.Boolean,System.FormattableString)">
@@ -174,19 +136,6 @@
         </member>
         <member name="M:InterpolatedStrings.InterpolatedStringBuilder.op_Addition(InterpolatedStrings.InterpolatedStringBuilder,System.FormattableString)">
             <inheritdoc cref="M:InterpolatedStrings.InterpolatedStringBuilder.Append(System.FormattableString)"/>
-        </member>
-        <member name="M:InterpolatedStrings.InterpolatedStringBuilder.Append6(InterpolatedStrings.InterpolatedStringAdapter)">
-            <summary>
-            Appends to this instance another interpolated string.
-            Uses InterpolatedStringHandler (net6.0+) which can be a little faster than using regex.
-            </summary>
-        </member>
-        <member name="M:InterpolatedStrings.InterpolatedStringBuilder.AppendIf6(System.Boolean,InterpolatedStrings.InterpolatedStringAdapter)">
-            <summary>
-            Appends to this instance another interpolated string, depending on a condition.
-            Uses InterpolatedStringHandler (net6.0+) which can be a little faster than using regex.
-            If condition is false, interpolated string won't be parsed or appended.
-            </summary>
         </member>
         <member name="M:InterpolatedStrings.InterpolatedStringBuilder.AppendLiteral(System.String)">
             <summary>
@@ -310,20 +259,66 @@
             Creates <see cref="T:InterpolatedStrings.InterpolatedStringBuilder"/>
             </summary>
         </member>
-        <member name="M:InterpolatedStrings.InterpolatedStringFactory.Create6(InterpolatedStrings.InterpolatedStringAdapter)">
-            <summary>
-            Creates a new InterpolatedStringBuilder using an InterpolatedStringHandler (net6.0+) which can be a little faster than using regex.
-            </summary>
-        </member>
-        <member name="M:InterpolatedStrings.InterpolatedStringFactory.Create6(InterpolatedStrings.InterpolatedStringAdapter,InterpolatedStrings.InterpolatedStringBuilderOptions)">
-            <summary>
-            Creates a new InterpolatedStringBuilder using an InterpolatedStringHandler (net6.0+) which can be a little faster than using regex.
-            </summary>
-        </member>
         <member name="M:InterpolatedStrings.InterpolatedStringFactory.Create(System.FormattableString)">
             <summary>
             Creates a new InterpolatedStringBuilder using regular expression for parsing the FormattableString. 
-            If you're using net6.0+ please consider using <see cref="M:InterpolatedStrings.InterpolatedStringFactory.Create6(InterpolatedStrings.InterpolatedStringAdapter)"/> which can be a little faster than using regex.
+            If you're using net6.0+ please consider using <see cref="!:Create6(InterpolatedStringAdapter)"/> which can be a little faster than using regex.
+            </summary>
+        </member>
+        <member name="F:InterpolatedStrings.InterpolatedStringFactory.Parser">
+            <summary>
+            Default Parser
+            </summary>
+        </member>
+        <member name="F:InterpolatedStrings.InterpolatedStringFactory.Default">
+            <summary>
+            Default Factory
+            </summary>
+        </member>
+        <member name="T:InterpolatedStrings.IInterpolatedStringParser">
+            <summary>
+            Parses FormattableString into <see cref="T:InterpolatedStrings.InterpolatedStringBuilder"/> using regex.
+            </summary>
+        </member>
+        <member name="M:InterpolatedStrings.IInterpolatedStringParser.ParseAppend(System.FormattableString,InterpolatedStrings.InterpolatedStringBuilder)">
+            <summary>
+            Parses a FormattableString and Appends it to an existing <see cref="T:InterpolatedStrings.InterpolatedStringBuilder"/>
+            </summary>
+        </member>
+        <member name="M:InterpolatedStrings.IInterpolatedStringParser.ShiftPlaceholderPositions(System.Text.StringBuilder,System.Int32)">
+            <summary>
+            When a FormattableString is appended to an existing InterpolatedString, 
+            the underlying format (where there are numeric placeholders) needs to be shifted because the arguments will have new positions in the final array
+            This method is used to shift a format by a number of positions.
+            </summary>
+        </member>
+        <member name="T:InterpolatedStrings.InterpolatedStringParser">
+            <summary>
+            Parses FormattableString into <see cref="T:InterpolatedStrings.InterpolatedStringBuilder"/>
+            </summary>
+        </member>
+        <member name="F:InterpolatedStrings.InterpolatedStringParser._formattableArgumentRegex">
+            <summary>
+            Regex to parse FormattableString
+            </summlderOptions.ArgumentComparer">
+            <summary>
+            Compares two arguments for reusing. Only used if <see cref="P:InterpolatedStrings.InterpolatedStringBuilderOptions.ReuseIdenticalParameters"/> is true.
+            By default it's <see cref="T:InterpolatedStrings.InterpolatedStringArgumentComparer"/>
+            </summary>
+        </member>
+        <member name="T:InterpolatedStrings.InterpolatedStringFactory">
+            <summary>
+            Creates <see cref="T:InterpolatedStrings.InterpolatedStringBuilder"/>
+            </summary>
+        </member>
+        <member name="M:InterpolatedStrings.InterpolatedStringFactory.Create(InterpolatedStrings.InterpolatedStringAdapter)">
+            <summary>
+            Creates a new InterpolatedStringBuilder using an InterpolatedStringHandler (net6.0+) which can be a little faster than using regex.
+            </summary>
+        </member>
+        <member name="M:InterpolatedStrings.InterpolatedStringFactory.Create(InterpolatedStrings.InterpolatedStringAdapter,InterpolatedStrings.InterpolatedStringBuilderOptions)">
+            <summary>
+            Creates a new InterpolatedStringBuilder using an InterpolatedStringHandler (net6.0+) which can be a little faster than using regex.
             </summary>
         </member>
         <member name="F:InterpolatedStrings.InterpolatedStringFactory.Parser">
@@ -377,7 +372,7 @@
         <member name="M:InterpolatedStrings.InterpolatedStringParser.#ctor">
             <inheritdoc />
         </member>
-        <member name="M:InterpolatedStrings.InterpolatedStringParser.ParseAppend6(InterpolatedStrings.InterpolatedStringAdapter,InterpolatedStrings.InterpolatedStringBuilder)">
+        <member name="M:InterpolatedStrings.InterpolatedStringParser.ParseAppend(InterpolatedStrings.InterpolatedStringAdapter,InterpolatedStrings.InterpolatedStringBuilder)">
             <summary>
             Parses a FormattableString (using <see cref="T:InterpolatedStrings.InterpolatedStringAdapter"/> handler) and Appends it to an existing <see cref="T:InterpolatedStrings.InterpolatedStringBuilder"/>.
             </summary>
