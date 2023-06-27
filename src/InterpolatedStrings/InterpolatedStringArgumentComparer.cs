@@ -28,7 +28,11 @@ namespace InterpolatedStrings
         }
 
         /// <inheritdoc/>
-        public int GetHashCode([DisallowNull] InterpolatedStringArgument obj)
+        public int GetHashCode(
+#if NETCOREAPP
+            [DisallowNull] 
+#endif
+        InterpolatedStringArgument obj)
         {
             return (obj.Argument?.GetHashCode() ?? 0) ^ (obj.Format?.GetHashCode() ?? 0);
         }

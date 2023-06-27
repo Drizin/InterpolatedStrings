@@ -184,7 +184,7 @@ namespace InterpolatedStrings
         /// Appends to this instance another interpolated string.
         /// Uses InterpolatedStringHandler (net6.0+) which can be a little faster than using regex.
         /// </summary>
-        public InterpolatedStringBuilder Append6([InterpolatedStringHandlerArgument("")] InterpolatedStringAdapter adapter)
+        public InterpolatedStringBuilder Append([InterpolatedStringHandlerArgument("")] InterpolatedStringAdapter adapter)
         {
             // InterpolatedStringAdapter will get this InterpolatedStringBuilder instance
             // and will receive the literals/arguments to be appended to this instance.
@@ -196,7 +196,7 @@ namespace InterpolatedStrings
         /// Uses InterpolatedStringHandler (net6.0+) which can be a little faster than using regex.
         /// If condition is false, interpolated string won't be parsed or appended.
         /// </summary>
-        public InterpolatedStringBuilder AppendIf6(bool condition, [InterpolatedStringHandlerArgument("", "condition")] InterpolatedStringAdapter adapter)
+        public InterpolatedStringBuilder AppendIf(bool condition, [InterpolatedStringHandlerArgument("", "condition")] InterpolatedStringAdapter adapter)
         {
             // InterpolatedStringAdapter will get this InterpolatedStringBuilder instance, and will also get the bool condition.
             // If condition is false, InterpolatedStringAdapter will just early-abort.
