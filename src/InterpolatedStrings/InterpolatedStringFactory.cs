@@ -12,7 +12,7 @@ namespace InterpolatedStrings
     {
 #if NET6_0_OR_GREATER
         /// <summary>
-        /// Creates a new InterpolatedStringBuilder using an InterpolatedStringHandler (net6.0+) which can be a little faster than using regex.
+        /// Creates a new InterpolatedStringBuilder using an InterpolatedStringHandler.
         /// </summary>
         public virtual InterpolatedStringBuilder Create(InterpolatedStringAdapter value)
         {
@@ -20,7 +20,7 @@ namespace InterpolatedStrings
         }
 
         /// <summary>
-        /// Creates a new InterpolatedStringBuilder using an InterpolatedStringHandler (net6.0+) which can be a little faster than using regex.
+        /// Creates a new InterpolatedStringBuilder using an InterpolatedStringHandler.
         /// </summary>
         public virtual InterpolatedStringBuilder Create([InterpolatedStringHandlerArgument("options")] InterpolatedStringAdapter value, InterpolatedStringBuilderOptions options)
         {
@@ -29,7 +29,6 @@ namespace InterpolatedStrings
 #else
         /// <summary>
         /// Creates a new InterpolatedStringBuilder using regular expression for parsing the FormattableString. 
-        /// If you're using net6.0+ please consider using <see cref="Create6(InterpolatedStringAdapter)"/> which can be a little faster than using regex.
         /// </summary>
         public virtual InterpolatedStringBuilder Create(FormattableString source)
         {

@@ -117,7 +117,7 @@ namespace InterpolatedStrings
         public virtual FormattableString AsFormattableString() => (FormattableString)this;
 #endregion
 
-#region Append (InterpolatedStringBuilder/FormattableString/+overload) / Append6
+#region Append (InterpolatedStringBuilder/FormattableString/+overload)
         /// <summary>
         /// Appends to this instance another InterpolatedString.
         /// Underlying parameters will be appended (merged), and underlying formats will be concatenated (placeholder positions will be shifted to their new positions).
@@ -151,7 +151,6 @@ namespace InterpolatedStrings
         /// Appends to this instance another FormattableString.
         /// Uses regular expression for parsing the FormattableString.
         /// Underlying parameters will be appended (merged), and underlying formats will be concatenated (placeholder positions will be shifted to their new positions).
-        /// If you're using net6.0+ please consider using <see cref="Append6(InterpolatedStringAdapter)"/> which can be a little faster than using regex.
         /// </summary>
         public virtual InterpolatedStringBuilder Append(FormattableString value)
         {

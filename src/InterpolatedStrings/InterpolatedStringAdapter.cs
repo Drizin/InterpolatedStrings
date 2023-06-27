@@ -21,7 +21,7 @@ namespace InterpolatedStrings
 
 #region ctors
         /// <inheritdoc />
-        public InterpolatedStringAdapter(int literalLength, int formattedCount) // InterpolatedStringFactory.Create6() doesn't provide "this" (it should CREATE a new StringBuilder)
+        public InterpolatedStringAdapter(int literalLength, int formattedCount) // InterpolatedStringFactory.Create() doesn't provide "this" (InterpolatedStringAdapter will create a new StringBuilder)
         {
             _interpolatedStringBuilder = new InterpolatedStringBuilder(literalLength, formattedCount, null);
         }

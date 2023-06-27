@@ -12,56 +12,44 @@ namespace InterpolatedStrings.Tests
     {
 
         int val1 = 3;
-        int val2 = 5;
         string world = "World";
 
         [Test]
         public void Test1()
         {
 
-            var s1 = new InterpolatedStringBuilder($"Hello {world}");              // creating using the constructor
-            var s2 = InterpolatedStringFactory.Default.Create($"Hello {world}");   // ...is equivalent of using the Create() factory
-            var s3 = InterpolatedStringFactory.Default.Create($"Hello {world}");  // ...while Create6() factory uses InterpolatedStringAdapter.
+            var s1 = new InterpolatedStringBuilder($"Hello {world}");              // creating using the constructor will always use regex
+            var s2 = InterpolatedStringFactory.Default.Create($"Hello {world}");   // ...while Create() factory (when using net6.0+) uses InterpolatedStringAdapter - but both should get identical behavior
 
             Assert.AreEqual("Hello {0}", s1.Format);
             Assert.AreEqual("Hello {0}", s2.Format);
-            Assert.AreEqual("Hello {0}", s3.Format);
             
             Assert.AreEqual(1, s1.Arguments.Count);
             Assert.AreEqual(1, s2.Arguments.Count);
-            Assert.AreEqual(1, s3.Arguments.Count);
 
             Assert.AreEqual(world, s1.GetArgument(0));
             Assert.AreEqual(world, s2.GetArgument(0));
-            Assert.AreEqual(world, s3.GetArgument(0));
 
             s1.AppendLiteral("!");
             s2.AppendLiteral("!");
-            s3.AppendLiteral("!");
 
             s1.AppendIf(true, $" will add {val1}");
             s2.AppendIf(true, $" will add {val1}");
-            s3.AppendIf(true, $" will add {val1}");
 
             s1.AppendIf(false, $" wont add {val1}");
             s2.AppendIf(false, $" wont add {val1}");
-            s3.AppendIf(false, $" wont add {val1}");
 
             Assert.AreEqual("Hello {0}! will add {1}", s1.Format);
             Assert.AreEqual("Hello {0}! will add {1}", s2.Format);
-            Assert.AreEqual("Hello {0}! will add {1}", s3.Format);
 
             Assert.AreEqual(2, s1.Arguments.Count);
             Assert.AreEqual(2, s2.Arguments.Count);
-            Assert.AreEqual(2, s3.Arguments.Count);
             
             Assert.AreEqual(world, s1.GetArgument(0));
             Assert.AreEqual(world, s2.GetArgument(0));
-            Assert.AreEqual(world, s3.GetArgument(0));
 
             Assert.AreEqual(val1, s1.GetArgument(1));
             Assert.AreEqual(val1, s2.GetArgument(1));
-            Assert.AreEqual(val1, s3.GetArgument(1));
         }
 
     }

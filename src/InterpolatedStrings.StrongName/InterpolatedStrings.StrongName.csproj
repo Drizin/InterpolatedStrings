@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>netstandard2.1;net5.0;net6.0</TargetFrameworks>
+		<TargetFrameworks>netstandard1.4;net5.0;net6.0</TargetFrameworks>
 		<Authors>Rick Drizin</Authors>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
 		<PackageProjectUrl>https://github.com/Drizin/InterpolatedStrings/</PackageProjectUrl>
@@ -19,6 +19,7 @@
 		<PackageReadmeFile>NuGetReadMe.md</PackageReadmeFile>
 		<AssemblyName>InterpolatedStrings.StrongName</AssemblyName>
 		<Nullable>enable</Nullable>
+		<LangVersion>8.0</LangVersion>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -46,7 +47,6 @@
 	</Choose>
 
 	<ItemGroup>
-		<Folder Include="Properties\" />
 		<Compile Include="..\InterpolatedStrings\**\*.cs" Exclude="..\InterpolatedStrings\obj\**\*.cs" />
 	</ItemGroup>
 

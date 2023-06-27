@@ -26,7 +26,7 @@ dotnet build -c release InterpolatedStrings\InterpolatedStrings.csproj
 & $msbuild "InterpolatedStrings\InterpolatedStrings.csproj" `
            /t:Pack                                        `
            /p:PackageOutputPath="..\packages-local\"      `
-           '/p:targetFrameworks="netstandard2.1;net5.0;net6.0"'  `
+           '/p:targetFrameworks="netstandard1.4;net5.0;net6.0"'  `
            /p:Configuration=$configuration                `
            /p:IncludeSymbols=true                         `
            /p:SymbolPackageFormat=snupkg                  `
@@ -38,7 +38,7 @@ dotnet build -c release InterpolatedStrings.StrongName\InterpolatedStrings.Stron
 & $msbuild "InterpolatedStrings.StrongName\InterpolatedStrings.StrongName.csproj" `
            /t:Pack                                        `
            /p:PackageOutputPath="..\packages-local\"      `
-           '/p:targetFrameworks="netstandard2.1;net5.0;net6.0"'  `
+           '/p:targetFrameworks="netstandard1.4;net5.0;net6.0"'  `
            /p:Configuration=$configuration                `
            /p:IncludeSymbols=true                         `
            /p:SymbolPackageFormat=snupkg                  `
